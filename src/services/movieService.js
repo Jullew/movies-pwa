@@ -2,9 +2,7 @@ import axios from "axios";
 export async function fetchMovies(query) {
   if (!query) return { Search: [] };
 
-  const res = await axios.post(
-    `/api/movies?query=${encodeURIComponent(query)}`
-  );
+  const res = await axios.get(`/api/movies?query=${encodeURIComponent(query)}`);
   if (!res.ok) {
     throw new Error("Błąd pobierania filmów z /api/movies");
   }

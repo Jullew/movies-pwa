@@ -1,15 +1,16 @@
+import { NextResponse } from "next/server";
 import axios from "axios";
 
-export default async function handler(req, res) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ error: "Metoda niedozwolona" });
-  }
-
-  const { query } = req.query;
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const query = searchParams.get("query");
   const API_KEY = process.env.OMDB_API_KEY;
 
   if (!query) {
-    return res.status(400).json({ error: "Brak zapytania w parametrach" });
+    return NextResponse.json(
+      { error: "Brak zapytania w parametrach" },
+      { status: 400 }
+    );
   }
 
   const url = `https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(
@@ -18,9 +19,9 @@ export default async function handler(req, res) {
 
   try {
     const response = await axios.get(url);
-    res.status(200).json(response.data);
+    return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     console.error("Błąd przy pobieraniu filmów:", error);
-    res.status(500).json({ error: "Błąd serwera" });
+    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
   }
 }
