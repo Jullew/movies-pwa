@@ -54,7 +54,7 @@ export default function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Logo desktop */}
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Movie sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -70,7 +70,7 @@ export default function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            AEH Movies PWA
           </Typography>
 
           {/* Menu mobilne */}

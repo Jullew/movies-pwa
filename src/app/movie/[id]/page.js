@@ -3,7 +3,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useMovieQuery } from "@/hooks/useMoviesQuery";
-import { Button, Typography } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import {
+  Star,
+  StarBorder,
+  Favorite,
+  FavoriteBorder,
+} from "@mui/icons-material";
 import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexDB"; // lub services
 
 export default function MovieDetailsPage() {
@@ -25,7 +41,6 @@ export default function MovieDetailsPage() {
     if (data) {
       await addFavorite(data);
       setIsFavorite(true);
-      alert(`Dodano do ulubionych: ${data.Title}`);
     }
   };
 
@@ -33,50 +48,112 @@ export default function MovieDetailsPage() {
     if (data) {
       await removeFavorite(data.imdbID);
       setIsFavorite(false);
-      alert(`Usunięto z ulubionych: ${data.Title}`);
     }
   };
 
-  if (isLoading) return <p>Wczytywanie...</p>;
-  if (isError) return <p>Błąd: {error.message}</p>;
-  if (!data) return <p>Nie znaleziono filmu.</p>;
-
-  // data = szczegóły filmu { Title, Year, Poster, Plot, ... }
-  return (
-    <div>
-      <Typography variant="h4" gutterBottom>
-        {data.Title}
+  if (isLoading) return <Typography variant="h5">Wczytywanie...</Typography>;
+  if (isError)
+    return (
+      <Typography variant="h5" color="error">
+        Błąd: {error.message}
       </Typography>
-      <p>Rok: {data.Year}</p>
-      <p>Gatunek: {data.Genre}</p>
-      <p>Reżyser: {data.Director}</p>
-      <p>Opis: {data.Plot}</p>
-      {data.Poster && data.Poster !== "N/A" && (
-        <img
-          src={data.Poster}
-          alt={data.Title}
-          style={{ maxWidth: "200px", marginBottom: "1rem" }}
-        />
-      )}
-      <div style={{ marginTop: "1rem" }}>
-        {isFavorite ? (
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleRemoveFavorite}
-          >
-            Usuń z ulubionych
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            onClick={handleAddFavorite}
-            style={{ marginRight: "0.5rem" }}
-          >
-            Dodaj do ulubionych
-          </Button>
-        )}
-      </div>
-    </div>
+    );
+  if (!data) return <Typography variant="h5">Nie znaleziono filmu.</Typography>;
+
+  // Przetwarzanie oceny na gwiazdki (OMDb zwraca ocenę jako np. "7.5/10")
+  const rating = parseFloat(data.imdbRating) || 0;
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 !== 0;
+
+  return (
+    <Box sx={{ maxWidth: "1200px", margin: "auto", padding: "2rem" }}>
+      <Grid container spacing={4} alignItems="center">
+        {/* Lewa strona - plakat */}
+        <Grid item xs={12} md={4}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
+            {data.Poster && data.Poster !== "N/A" && (
+              <CardMedia component="img" image={data.Poster} alt={data.Title} />
+            )}
+          </Card>
+        </Grid>
+
+        {/* Prawa strona - szczegóły */}
+        <Grid item xs={12} md={8}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Typography variant="h4" fontWeight="bold" gutterBottom>
+                {data.Title} ({data.Year})
+              </Typography>
+
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                gutterBottom
+              >
+                {data.Genre} | {data.Runtime} | {data.Director}
+              </Typography>
+
+              {/* Ocena filmu */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "1rem",
+                }}
+              >
+                {Array.from({ length: fullStars }).map((_, i) => (
+                  <Star key={i} color="primary" fontSize="small" />
+                ))}
+                {halfStar && <StarBorder color="primary" />}
+                <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
+                  {data.imdbRating}/10
+                </Typography>
+              </Box>
+
+              <Typography variant="body1" paragraph>
+                {data.Plot}
+              </Typography>
+
+              {/* Przycisk Ulubione */}
+              <Box sx={{ display: "flex", gap: 2, marginTop: "1rem" }}>
+                <Tooltip
+                  title={
+                    isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"
+                  }
+                >
+                  <IconButton
+                    onClick={
+                      isFavorite ? handleRemoveFavorite : handleAddFavorite
+                    }
+                    color={isFavorite ? "secondary" : "primary"}
+                    sx={{
+                      backgroundColor: isFavorite
+                        ? "rgba(255, 0, 0, 0.1)"
+                        : "rgba(0, 0, 255, 0.1)",
+                      "&:hover": {
+                        backgroundColor: isFavorite
+                          ? "rgba(255, 0, 0, 0.3)"
+                          : "rgba(0, 0, 255, 0.3)",
+                      },
+                      transition: "0.3s",
+                    }}
+                  >
+                    {isFavorite ? <Favorite /> : <FavoriteBorder />}
+                  </IconButton>
+                </Tooltip>
+
+                <Button
+                  variant="contained"
+                  href="/"
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Powrót do listy
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
