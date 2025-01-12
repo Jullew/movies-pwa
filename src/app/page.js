@@ -14,6 +14,12 @@ export default function HomePage() {
     setQuery(searchTerm);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Typography variant="h4" gutterBottom>
@@ -23,6 +29,7 @@ export default function HomePage() {
         <TextField
           label="Wpisz tytuł filmu"
           value={searchTerm}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <Button variant="contained" onClick={handleSearch}>

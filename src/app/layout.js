@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/system";
 import { CssBaseline } from "@mui/material";
 import theme from "@/theme";
 import ReactQueryProvider from "./ReactQueryProvider";
+import ResponsiveAppBar from "@/components/AppBar";
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
             <ThemeProvider theme={theme}>
               {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
               <CssBaseline />
+              <ResponsiveAppBar />
               {children}
             </ThemeProvider>
           </ReactQueryProvider>
