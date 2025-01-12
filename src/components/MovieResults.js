@@ -1,15 +1,41 @@
 "use client";
 
-import React from "react";
-import { Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Tooltip,
+  Typography,
+  Button,
+} from "@mui/material";
+import { Star, StarBorder } from "@mui/icons-material";
 import Link from "next/link";
-import { addFavorite } from "@/utils/indexDB";
+import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexDB";
 
 export default function MovieResults({ movies }) {
-  const handleAddFavorite = async (movie) => {
+  const [favorites, setFavorites] = useState([]);
+
+  // Pobieranie ulubionych filmów przy montowaniu komponentu
+  useEffect(() => {
+    async function fetchFavorites() {
+      const favs = await getFavorites();
+      setFavorites(favs.map((movie) => movie.imdbID));
+    }
+    fetchFavorites();
+  }, []);
+
+  const handleToggleFavorite = async (movie) => {
     try {
-      await addFavorite(movie);
-      alert(`Dodano do ulubionych: ${movie.Title}`);
+      if (favorites.includes(movie.imdbID)) {
+        await removeFavorite(movie.imdbID);
+        setFavorites(favorites.filter((id) => id !== movie.imdbID));
+      } else {
+        await addFavorite(movie);
+        setFavorites([...favorites, movie.imdbID]);
+      }
     } catch (err) {
       console.error("Błąd zapisu do IndexedDB:", err);
     }
@@ -20,28 +46,56 @@ export default function MovieResults({ movies }) {
   }
 
   return (
-    <div>
+    <Grid container spacing={3}>
       {movies.map((movie) => (
-        <div key={movie.imdbID} style={{ marginBottom: "1rem" }}>
-          <strong>{movie.Title}</strong> ({movie.Year})<br />
-          {movie.Poster && movie.Poster !== "N/A" && (
-            <img
-              src={movie.Poster}
-              alt={movie.Title}
-              style={{ maxWidth: "100px", marginTop: "0.5rem" }}
-            />
-          )}
-          <br />
-          <Link href={`/movie/${movie.imdbID}`} passHref>
-            <Button variant="outlined" style={{ marginRight: "0.5rem" }}>
-              Szczegóły
-            </Button>
-          </Link>
-          <Button variant="contained" onClick={() => handleAddFavorite(movie)}>
-            Dodaj do ulubionych
-          </Button>
-        </div>
+        <Grid item key={movie.imdbID} xs={12} sm={6} md={4} lg={3}>
+          <Card>
+            {movie.Poster && movie.Poster !== "N/A" && (
+              <CardMedia
+                component="img"
+                height="300"
+                image={movie.Poster}
+                alt={movie.Title}
+              />
+            )}
+            <CardContent>
+              <Typography variant="h6">{movie.Title}</Typography>
+              <Typography variant="subtitle2" color="textSecondary">
+                {movie.Year}
+              </Typography>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "1rem",
+                }}
+              >
+                <Link href={`/movie/${movie.imdbID}`} passHref>
+                  <Button variant="outlined">Szczegóły</Button>
+                </Link>
+                <Tooltip
+                  title={
+                    favorites.includes(movie.imdbID)
+                      ? "Usuń z ulubionych"
+                      : "Dodaj do ulubionych"
+                  }
+                >
+                  <IconButton
+                    onClick={() => handleToggleFavorite(movie)}
+                    color="primary"
+                  >
+                    {favorites.includes(movie.imdbID) ? (
+                      <Star />
+                    ) : (
+                      <StarBorder />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 }

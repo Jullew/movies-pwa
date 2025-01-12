@@ -1,18 +1,30 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import useMovieQuery from "@/hooks/useMovieQuery";
+import { useMovieQuery } from "@/hooks/useMoviesQuery";
 import { Button, Typography } from "@mui/material";
-import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexedDB"; // lub services
+import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexDB"; // lub services
 
 export default function MovieDetailsPage() {
   const { id } = useParams();
   const { data, isLoading, isError, error } = useMovieQuery(id);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    async function checkFavorite() {
+      if (id) {
+        const favorites = await getFavorites();
+        setIsFavorite(favorites.some((movie) => movie.imdbID === id));
+      }
+    }
+    checkFavorite();
+  }, [id]);
 
   const handleAddFavorite = async () => {
     if (data) {
       await addFavorite(data);
+      setIsFavorite(true);
       alert(`Dodano do ulubionych: ${data.Title}`);
     }
   };
@@ -20,6 +32,7 @@ export default function MovieDetailsPage() {
   const handleRemoveFavorite = async () => {
     if (data) {
       await removeFavorite(data.imdbID);
+      setIsFavorite(false);
       alert(`Usunięto z ulubionych: ${data.Title}`);
     }
   };
@@ -46,20 +59,23 @@ export default function MovieDetailsPage() {
         />
       )}
       <div style={{ marginTop: "1rem" }}>
-        <Button
-          variant="contained"
-          onClick={handleAddFavorite}
-          style={{ marginRight: "0.5rem" }}
-        >
-          Dodaj do ulubionych
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={handleRemoveFavorite}
-        >
-          Usuń z ulubionych
-        </Button>
+        {isFavorite ? (
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleRemoveFavorite}
+          >
+            Usuń z ulubionych
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            onClick={handleAddFavorite}
+            style={{ marginRight: "0.5rem" }}
+          >
+            Dodaj do ulubionych
+          </Button>
+        )}
       </div>
     </div>
   );

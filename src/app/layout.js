@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${roboto.variable}`}>
         <SWRegister />
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+        <AppRouterCacheProvider>
           <ReactQueryProvider>
             <ThemeProvider theme={theme}>
               {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
