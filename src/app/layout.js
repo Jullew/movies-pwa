@@ -1,8 +1,11 @@
 import SWRegister from "./components/SWRegister";
 import "./globals.css";
 import { Roboto } from "next/font/google";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 
-import MaterialUIProvider from "./MaterialUIProvider";
+import { ThemeProvider } from "@mui/system";
+import { CssBaseline } from "@mui/material";
+import theme from "@/theme";
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -22,7 +25,13 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${roboto.variable}`}>
         <SWRegister />
-        <MaterialUIProvider>{children}</MaterialUIProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
