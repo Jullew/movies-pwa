@@ -4,7 +4,7 @@ self.addEventListener("install", (event) => {
     caches.open("movies-pwa-cache").then((cache) =>
       cache.addAll([
         "/", // Strona główna
-        "/favicon.png",
+        "/f-192.png",
         "/manifest.json",
         // ... możesz dodać tu więcej plików statycznych do cache
       ])
@@ -34,7 +34,7 @@ self.addEventListener("push", (event) => {
   const title = data.title || "Nowa informacja!";
   const options = {
     body: data.body || "Otrzymałeś wiadomość.",
-    icon: "/favicon.png",
+    icon: "/f-192.png",
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
