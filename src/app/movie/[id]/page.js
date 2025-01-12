@@ -19,6 +19,7 @@ import {
   StarBorder,
   Favorite,
   FavoriteBorder,
+  StarHalf,
 } from "@mui/icons-material";
 import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexDB"; // lub services
 
@@ -100,7 +101,7 @@ export default function MovieDetailsPage() {
                 {Array.from({ length: fullStars }).map((_, i) => (
                   <Star key={i} color="primary" fontSize="small" />
                 ))}
-                {halfStar && <StarBorder color="primary" />}
+                {halfStar && <StarHalf color="primary" />}
                 <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
                   {data.imdbRating}/10
                 </Typography>

@@ -11,7 +11,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { Star, StarBorder } from "@mui/icons-material";
+import { Star, StarBorder, StarHalf } from "@mui/icons-material";
 import Link from "next/link";
 
 export default function MovieCard({ movie, isFavorite, onToggleFavorite }) {
@@ -22,6 +22,10 @@ export default function MovieCard({ movie, isFavorite, onToggleFavorite }) {
       </Typography>
     );
   }
+
+  const rating = parseFloat(movie.imdbRating) || 0;
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 !== 0;
 
   return (
     <Card
@@ -64,9 +68,10 @@ export default function MovieCard({ movie, isFavorite, onToggleFavorite }) {
           }}
         >
           <Box sx={{ display: "flex" }}>
-            {[...Array(Math.floor(movie.imdbRating || 0))].map((_, i) => (
+            {Array.from({ length: fullStars }).map((_, i) => (
               <Star key={i} color="primary" />
             ))}
+            {halfStar && <StarHalf color="primary" />}
           </Box>
           <Typography
             sx={{ fontSize: "1.3rem", fontWeight: "bold", color: "#fdd835" }}
