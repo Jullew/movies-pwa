@@ -59,13 +59,15 @@ export default function MovieCard({ movie, isFavorite, onToggleFavorite }) {
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 1,
+            justifyContent: "space-between",
             marginBottom: "1rem",
           }}
         >
-          {[...Array(Math.floor(movie.imdbRating || 0))].map((_, i) => (
-            <Star key={i} color="primary" />
-          ))}
+          <Box sx={{ display: "flex" }}>
+            {[...Array(Math.floor(movie.imdbRating || 0))].map((_, i) => (
+              <Star key={i} color="primary" />
+            ))}
+          </Box>
           <Typography
             sx={{ fontSize: "1.3rem", fontWeight: "bold", color: "#fdd835" }}
           >
