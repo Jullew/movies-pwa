@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TextField, Button, Typography, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import { useMoviesQuery } from "@/hooks/useMoviesQuery";
 import MovieResults from "@/components/MovieResults";
 
@@ -42,10 +48,15 @@ export default function HomePage() {
         width: "100%",
         maxWidth: "1600px",
         margin: "auto",
-        padding: "2rem",
+        padding: "1rem",
       }}
     >
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        textAlign="center"
+        gutterBottom
+      >
         Wyszukiwarka Filmów
       </Typography>
 
@@ -72,7 +83,11 @@ export default function HomePage() {
         </Button>
       </Box>
 
-      {isLoading && <Typography>Ładowanie...</Typography>}
+      {isLoading && (
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <CircularProgress />
+        </Box>
+      )}
       {isError && (
         <Typography color="error">
           Błąd: {error?.message || "Nie udało się pobrać filmów"}

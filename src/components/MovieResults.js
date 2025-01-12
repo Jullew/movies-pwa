@@ -21,7 +21,6 @@ export default function MovieResults({ movies }) {
       display="grid"
       gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))"
       gap={3}
-      padding={2}
       width="100%"
     >
       {movies.map((movie) => {

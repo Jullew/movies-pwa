@@ -17,7 +17,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <Box sx={{ maxWidth: "1600px", margin: "auto", padding: "2rem" }}>
+    <Box sx={{ maxWidth: "1600px", margin: "auto", padding: "1rem" }}>
       <Typography variant="h4" align="center" fontWeight="bold" gutterBottom>
         Ulubione Filmy
       </Typography>

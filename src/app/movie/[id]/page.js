@@ -14,14 +14,9 @@ import {
   CardMedia,
   IconButton,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
-import {
-  Star,
-  StarBorder,
-  Favorite,
-  FavoriteBorder,
-  StarHalf,
-} from "@mui/icons-material";
+import { Star, Favorite, FavoriteBorder, StarHalf } from "@mui/icons-material";
 
 export default function MovieDetailsPage() {
   const { id } = useParams();
@@ -38,7 +33,13 @@ export default function MovieDetailsPage() {
     router.push("/");
   };
 
-  if (isLoading) return <Typography variant="h5">Wczytywanie...</Typography>;
+  if (isLoading)
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Box>
+    );
+
   if (isError)
     return (
       <Typography variant="h5" color="error">
@@ -48,7 +49,7 @@ export default function MovieDetailsPage() {
   if (!data) return <Typography variant="h5">Nie znaleziono filmu.</Typography>;
 
   return (
-    <Box sx={{ maxWidth: "1200px", margin: "auto", padding: "2rem" }}>
+    <Box sx={{ maxWidth: "1200px", margin: "auto", padding: "1rem" }}>
       <Grid container spacing={4} alignItems="center">
         <Grid item xs={12} md={4}>
           <MoviePoster poster={data.Poster} title={data.Title} />
