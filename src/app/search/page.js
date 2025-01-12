@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import useMoviesQuery from "@/hooks/useMoviesQuery";
+import { useMoviesQuery } from "@/hooks/useMoviesQuery";
 import { Typography, Button } from "@mui/material";
 
 export default function SearchPage() {
