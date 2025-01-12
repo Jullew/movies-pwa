@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import { useMoviesQuery } from "@/hooks/useMoviesQuery";
-import MovieResults from "@/components/MovieCard"; // Upewnij się, że MovieResults używa MovieCard
+import MovieResults from "@/components/MovieResults";
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
@@ -30,7 +30,7 @@ export default function HomePage() {
       justifyContent="center"
       sx={{
         width: "100%",
-        maxWidth: "1200px",
+        maxWidth: "1600px",
         margin: "auto",
         padding: "2rem",
       }}
@@ -69,13 +69,7 @@ export default function HomePage() {
         </Typography>
       )}
 
-      {data?.Search?.length > 0 ? (
-        <MovieResults movies={data.Search} />
-      ) : (
-        <Typography variant="h6" sx={{ marginTop: "1rem" }}>
-          Brak wyników wyszukiwania.
-        </Typography>
-      )}
+      {data?.Search?.length > 0 && <MovieResults movies={data.Search} />}
     </Box>
   );
 }

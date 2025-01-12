@@ -53,7 +53,6 @@ export default function ResponsiveAppBar() {
     <AppBar position="static" sx={{ marginBottom: 5 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo desktop */}
           <Movie sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -73,7 +72,6 @@ export default function ResponsiveAppBar() {
             AEH Movies PWA
           </Typography>
 
-          {/* Menu mobilne */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -105,7 +103,6 @@ export default function ResponsiveAppBar() {
             </Menu>
           </Box>
 
-          {/* Logo mobilne */}
           <Movie sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -126,7 +123,6 @@ export default function ResponsiveAppBar() {
             AEH Movies PWA
           </Typography>
 
-          {/* Menu desktop */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {menuItems.map((page) => (
               <Button

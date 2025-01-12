@@ -60,7 +60,6 @@ export default function MovieDetailsPage() {
     );
   if (!data) return <Typography variant="h5">Nie znaleziono filmu.</Typography>;
 
-  // Przetwarzanie oceny na gwiazdki (OMDb zwraca ocenę jako np. "7.5/10")
   const rating = parseFloat(data.imdbRating) || 0;
   const fullStars = Math.floor(rating);
   const halfStar = rating % 1 !== 0;
@@ -68,7 +67,6 @@ export default function MovieDetailsPage() {
   return (
     <Box sx={{ maxWidth: "1200px", margin: "auto", padding: "2rem" }}>
       <Grid container spacing={4} alignItems="center">
-        {/* Lewa strona - plakat */}
         <Grid item xs={12} md={4}>
           <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             {data.Poster && data.Poster !== "N/A" && (
@@ -77,7 +75,6 @@ export default function MovieDetailsPage() {
           </Card>
         </Grid>
 
-        {/* Prawa strona - szczegóły */}
         <Grid item xs={12} md={8}>
           <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
@@ -93,7 +90,6 @@ export default function MovieDetailsPage() {
                 {data.Genre} | {data.Runtime} | {data.Director}
               </Typography>
 
-              {/* Ocena filmu */}
               <Box
                 sx={{
                   display: "flex",
@@ -114,7 +110,6 @@ export default function MovieDetailsPage() {
                 {data.Plot}
               </Typography>
 
-              {/* Przycisk Ulubione */}
               <Box sx={{ display: "flex", gap: 2, marginTop: "1rem" }}>
                 <Tooltip
                   title={

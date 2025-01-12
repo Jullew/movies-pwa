@@ -8,8 +8,8 @@ export async function fetchMovies(query) {
       `/api/movies?query=${encodeURIComponent(query)}`
     );
 
-    if (res.data.Response === "False") {
-      throw new Error(res.data.Error || "Nie znaleziono filmów");
+    if (!res.data.Search || res.data.error) {
+      throw new Error(res.data.error || "Nie znaleziono filmów");
     }
 
     return res.data;
@@ -25,7 +25,7 @@ export async function fetchMovieById(id) {
   try {
     const res = await axios.get(`/api/movie?id=${encodeURIComponent(id)}`);
 
-    if (res.data.Response === "False") {
+    if (!res.data || res.data.Response === "False") {
       throw new Error(res.data.Error || "Nie znaleziono szczegółów filmu");
     }
 

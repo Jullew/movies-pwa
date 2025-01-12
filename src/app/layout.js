@@ -8,6 +8,7 @@ import { CssBaseline } from "@mui/material";
 import theme from "@/theme";
 import ReactQueryProvider from "./ReactQueryProvider";
 import ResponsiveAppBar from "@/components/AppBar";
+import { Toaster } from "react-hot-toast";
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -27,10 +28,10 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${roboto.variable}`}>
         <SWRegister />
+        <Toaster position="top-center" reverseOrder={false} />
         <AppRouterCacheProvider>
           <ReactQueryProvider>
             <ThemeProvider theme={theme}>
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
               <CssBaseline />
               <ResponsiveAppBar />
               {children}
