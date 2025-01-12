@@ -21,7 +21,7 @@ export default function HomePage() {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <Box display="flex" flexDirection="column" alignItems="center" fullWidth>
       <Typography variant="h4" gutterBottom>
         Wyszukiwarka filmów
       </Typography>

@@ -1,24 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton,
-  Tooltip,
-  Typography,
-  Button,
-} from "@mui/material";
-import { Star, StarBorder } from "@mui/icons-material";
-import Link from "next/link";
+import { Box, Typography } from "@mui/material";
 import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexDB";
+import MovieCard from "@/components/MovieCard";
 
 export default function MovieResults({ movies }) {
   const [favorites, setFavorites] = useState([]);
 
-  // Pobieranie ulubionych filmów przy montowaniu komponentu
   useEffect(() => {
     async function fetchFavorites() {
       const favs = await getFavorites();
@@ -42,60 +31,29 @@ export default function MovieResults({ movies }) {
   };
 
   if (!movies || movies.length === 0) {
-    return <p>Brak wyników do wyświetlenia.</p>;
+    return (
+      <Typography variant="h5" align="center">
+        Brak wyników do wyświetlenia.
+      </Typography>
+    );
   }
 
   return (
-    <Grid container spacing={3} padding={3}>
+    <Box
+      display="grid"
+      gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))"
+      gap={3}
+      padding={2}
+      sx={{ width: "80%" }}
+    >
       {movies.map((movie) => (
-        <Grid item key={movie.imdbID} xs={12} sm={6} md={4} lg={3}>
-          <Card>
-            {movie.Poster && movie.Poster !== "N/A" && (
-              <CardMedia
-                component="img"
-                height="300"
-                image={movie.Poster}
-                alt={movie.Title}
-              />
-            )}
-            <CardContent>
-              <Typography variant="h6">{movie.Title}</Typography>
-              <Typography variant="subtitle2" color="textSecondary">
-                {movie.Year}
-              </Typography>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginTop: "1rem",
-                }}
-              >
-                <Link href={`/movie/${movie.imdbID}`} passHref>
-                  <Button variant="outlined">Szczegóły</Button>
-                </Link>
-                <Tooltip
-                  title={
-                    favorites.includes(movie.imdbID)
-                      ? "Usuń z ulubionych"
-                      : "Dodaj do ulubionych"
-                  }
-                >
-                  <IconButton
-                    onClick={() => handleToggleFavorite(movie)}
-                    color="primary"
-                  >
-                    {favorites.includes(movie.imdbID) ? (
-                      <Star />
-                    ) : (
-                      <StarBorder />
-                    )}
-                  </IconButton>
-                </Tooltip>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
+        <MovieCard
+          key={movie.imdbID}
+          movie={movie}
+          isFavorite={favorites.includes(movie.imdbID)}
+          onToggleFavorite={handleToggleFavorite}
+        />
       ))}
-    </Grid>
+    </Box>
   );
 }
