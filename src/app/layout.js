@@ -6,6 +6,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/system";
 import { CssBaseline } from "@mui/material";
 import theme from "@/theme";
+import ReactQueryProvider from "./ReactQueryProvider";
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -26,11 +27,13 @@ export default function RootLayout({ children }) {
       <body className={`${roboto.variable}`}>
         <SWRegister />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            {children}
-          </ThemeProvider>
+          <ReactQueryProvider>
+            <ThemeProvider theme={theme}>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
+              {children}
+            </ThemeProvider>
+          </ReactQueryProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
