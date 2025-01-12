@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import { useMoviesQuery } from "@/hooks/useMoviesQuery";
-import MovieResults from "@/components/MovieResults";
+import MovieResults from "@/components/MovieCard"; // Upewnij się, że MovieResults używa MovieCard
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
@@ -11,7 +11,9 @@ export default function HomePage() {
   const { data, isLoading, isError, error } = useMoviesQuery(query);
 
   const handleSearch = () => {
-    setQuery(searchTerm);
+    if (searchTerm.trim() !== "") {
+      setQuery(searchTerm);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -21,13 +23,36 @@ export default function HomePage() {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" fullWidth>
-      <Typography variant="h4" gutterBottom>
-        Wyszukiwarka filmów
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{
+        width: "100%",
+        maxWidth: "1200px",
+        margin: "auto",
+        padding: "2rem",
+      }}
+    >
+      <Typography variant="h4" fontWeight="bold" gutterBottom>
+        Wyszukiwarka Filmów
       </Typography>
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+
+      <Box
+        display="flex"
+        flexDirection="row"
+        gap={2}
+        sx={{
+          width: "100%",
+          maxWidth: "600px",
+          marginBottom: "1.5rem",
+        }}
+      >
         <TextField
           label="Wpisz tytuł filmu"
+          variant="outlined"
+          fullWidth
           value={searchTerm}
           onKeyDown={handleKeyDown}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -35,15 +60,22 @@ export default function HomePage() {
         <Button variant="contained" onClick={handleSearch}>
           Szukaj
         </Button>
-      </div>
+      </Box>
 
-      {isLoading && <p>Ładowanie...</p>}
+      {isLoading && <Typography>Ładowanie...</Typography>}
       {isError && (
-        <p style={{ color: "red" }}>
+        <Typography color="error">
           Błąd: {error?.message || "Nie udało się pobrać filmów"}
-        </p>
+        </Typography>
       )}
-      {data && <MovieResults movies={data.Search || []} />}
+
+      {data?.Search?.length > 0 ? (
+        <MovieResults movies={data.Search} />
+      ) : (
+        <Typography variant="h6" sx={{ marginTop: "1rem" }}>
+          Brak wyników wyszukiwania.
+        </Typography>
+      )}
     </Box>
   );
 }

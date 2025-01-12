@@ -44,7 +44,6 @@ export default function MovieResults({ movies }) {
       gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))"
       gap={3}
       padding={2}
-      sx={{ width: "80%" }}
     >
       {movies.map((movie) => (
         <MovieCard
