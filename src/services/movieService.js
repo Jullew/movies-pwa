@@ -2,12 +2,20 @@ import axios from "axios";
 export async function fetchMovies(query) {
   if (!query) return { Search: [] };
 
-  const res = await axios.get(`/api/movies?query=${encodeURIComponent(query)}`);
-  if (!res.ok) {
-    throw new Error("Błąd pobierania filmów z /api/movies");
+  try {
+    const res = await axios.get(
+      `/api/movies?query=${encodeURIComponent(query)}`
+    );
+
+    if (res.data.Response === "False") {
+      throw new Error(res.data.Error || "Nie znaleziono filmów");
+    }
+
+    return res.data;
+  } catch (error) {
+    console.error("Błąd pobierania filmów:", error);
+    throw new Error("Nie udało się pobrać filmów. Spróbuj ponownie.");
   }
-  // OMDb zwraca obiekt np. { Search: [...], totalResults: "...", ... }
-  return res.json();
 }
 
 export async function fetchMovieById(id) {

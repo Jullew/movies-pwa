@@ -8,6 +8,11 @@ export function useMoviesQuery(query) {
     queryKey: ["movies", query],
     queryFn: () => fetchMovies(query),
     enabled: !!query,
+    staleTime: 1000 * 60 * 5,
+    retry: 1, // Maksymalnie 1 ponowna próba w razie błędu
+    onError: (error) => {
+      console.error("Błąd zapytania do API filmów:", error);
+    },
   });
 }
 
@@ -16,5 +21,6 @@ export function useMovieQuery(id) {
     queryKey: ["movie", id],
     queryFn: () => fetchMovieById(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
