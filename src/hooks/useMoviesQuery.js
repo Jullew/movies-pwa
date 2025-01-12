@@ -9,7 +9,7 @@ export function useMoviesQuery(query) {
     queryFn: () => fetchMovies(query),
     enabled: !!query,
     staleTime: 1000 * 60 * 5,
-    retry: 1, // Maksymalnie 1 ponowna próba w razie błędu
+    retry: 1,
     onError: (error) => {
       console.error("Błąd zapytania do API filmów:", error);
     },

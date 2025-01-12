@@ -15,13 +15,7 @@ import { Star, StarBorder, StarHalf } from "@mui/icons-material";
 import Link from "next/link";
 
 export default function MovieCard({ movie, isFavorite, onToggleFavorite }) {
-  if (!movie) {
-    return (
-      <Typography variant="h6" align="center">
-        Brak danych o filmie
-      </Typography>
-    );
-  }
+  if (!movie) return null;
 
   const rating = parseFloat(movie.imdbRating) || 0;
   const fullStars = Math.floor(rating);

@@ -1,25 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography } from "@mui/material";
-import { getFavorites, removeFavorite } from "@/utils/indexDB";
-import MovieCard from "@/components/MovieCard";
+import useFavorites from "@/hooks/useFavorites";
+import MovieResults from "@/components/MovieResults";
 
 export default function FavoritesPage() {
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    async function fetchFavorites() {
-      const favs = await getFavorites();
-      setFavorites(favs);
-    }
-    fetchFavorites();
-  }, []);
-
-  const handleRemoveFavorite = async (imdbID) => {
-    await removeFavorite(imdbID);
-    setFavorites((prev) => prev.filter((movie) => movie.imdbID !== imdbID));
-  };
+  const { favorites } = useFavorites();
 
   if (favorites.length === 0) {
     return (
@@ -34,21 +21,7 @@ export default function FavoritesPage() {
       <Typography variant="h4" align="center" fontWeight="bold" gutterBottom>
         Ulubione Filmy
       </Typography>
-
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))"
-        gap={3}
-        padding={2}
-      >
-        {favorites.map((movie) => (
-          <MovieCard
-            key={movie.imdbID}
-            movie={movie}
-            onRemove={handleRemoveFavorite}
-          />
-        ))}
-      </Box>
+      <MovieResults movies={favorites} />
     </Box>
   );
 }

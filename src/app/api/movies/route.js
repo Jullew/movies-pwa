@@ -14,7 +14,6 @@ export async function GET(req) {
   }
 
   try {
-    // Pobranie listy filmów
     const searchUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(
       query
     )}`;
@@ -27,7 +26,6 @@ export async function GET(req) {
       );
     }
 
-    // Pobranie pełnych szczegółów dla pierwszych 10 filmów
     const searchResults = searchResponse.data.Search.slice(0, 10);
     const fullDetailsPromises = searchResults.map(async (movie) => {
       const detailsUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}&plot=full`;

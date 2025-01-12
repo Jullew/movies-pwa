@@ -1,5 +1,3 @@
-// utils/indexedDB.js
-
 /**
  * Tworzenie/otwieranie bazy "moviesDB" w IndexedDB.
  * Tworzenie obiektu store "favorites" (kluczem jest imdbID).
