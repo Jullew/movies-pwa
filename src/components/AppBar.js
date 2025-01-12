@@ -8,45 +8,26 @@ import {
   Typography,
   Menu,
   Container,
-  Avatar,
   Button,
-  Tooltip,
   MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import { Movie } from "@mui/icons-material";
-import { useRouter } from "next/router";
 
-// Definicja pozycji menu nawigacyjnego
 const menuItems = [
   { name: "Home", url: "/" },
   { name: "Ulubione", url: "/favorites" },
 ];
 
-// Definicja opcji w menu użytkownika
-const userMenuItems = ["Profil", "Ustawienia", "Wyloguj"];
-
 export default function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const router = useRouter;
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (

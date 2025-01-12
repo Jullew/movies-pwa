@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useMovieQuery } from "@/hooks/useMoviesQuery";
 import {
   Button,
@@ -25,6 +25,7 @@ import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexDB"; // 
 
 export default function MovieDetailsPage() {
   const { id } = useParams();
+  const router = useRouter();
   const { data, isLoading, isError, error } = useMovieQuery(id);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -50,6 +51,14 @@ export default function MovieDetailsPage() {
       await removeFavorite(data.imdbID);
       setIsFavorite(false);
     }
+  };
+
+  const handleBack = () => {
+    const savedQuery = sessionStorage.getItem("searchQuery");
+    if (!savedQuery) {
+      sessionStorage.removeItem("searchQuery"); // Jeśli użytkownik wchodził bez wyszukiwania, resetujemy
+    }
+    router.push("/"); // Przenosimy użytkownika na stronę główną
   };
 
   if (isLoading) return <Typography variant="h5">Wczytywanie...</Typography>;
@@ -138,11 +147,7 @@ export default function MovieDetailsPage() {
                   </IconButton>
                 </Tooltip>
 
-                <Button
-                  variant="contained"
-                  href="/"
-                  sx={{ fontWeight: "bold" }}
-                >
+                <Button variant="contained" onClick={handleBack}>
                   Powrót do listy
                 </Button>
               </Box>

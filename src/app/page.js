@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import { useMoviesQuery } from "@/hooks/useMoviesQuery";
 import MovieResults from "@/components/MovieResults";
@@ -8,11 +8,21 @@ import MovieResults from "@/components/MovieResults";
 export default function HomePage() {
   const [query, setQuery] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const savedQuery = sessionStorage.getItem("searchQuery");
+    if (savedQuery) {
+      setQuery(savedQuery);
+      setSearchTerm(savedQuery);
+    }
+  }, []);
+
   const { data, isLoading, isError, error } = useMoviesQuery(query);
 
   const handleSearch = () => {
     if (searchTerm.trim() !== "") {
       setQuery(searchTerm);
+      sessionStorage.setItem("searchQuery", searchTerm);
     }
   };
 
