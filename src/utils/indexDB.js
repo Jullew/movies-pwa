@@ -25,7 +25,7 @@ export function openDB() {
 }
 
 /**
- * Dodawawanie obiektu "movie" do store "favorites".
+ * Dodawanie lub aktualizacja obiektu "movie" w store "favorites".
  * @param {Object} movie - np. { imdbID, Title, Year, Poster, ... }
  */
 export async function addFavorite(movie) {
@@ -33,7 +33,7 @@ export async function addFavorite(movie) {
   return new Promise((resolve, reject) => {
     const tx = db.transaction("favorites", "readwrite");
     const store = tx.objectStore("favorites");
-    const req = store.add(movie);
+    const req = store.put(movie); // Zmieniono z add na put
 
     req.onsuccess = () => {
       resolve();
@@ -45,7 +45,7 @@ export async function addFavorite(movie) {
 }
 
 /**
- * Pobieranie filmó z "favorites".
+ * Pobieranie filmów z "favorites".
  * @returns {Promise<Array>} tablica obiektów filmów
  */
 export async function getFavorites() {
@@ -77,5 +77,47 @@ export async function removeFavorite(imdbID) {
 
     req.onsuccess = () => resolve();
     req.onerror = (e) => reject(e.target.error);
+  });
+}
+
+/**
+ * Aktualizacja (lub dodanie, jeśli nie istnieje) obiektu "movie" w store "favorites".
+ * Kluczem jest "imdbID".
+ */
+export async function updateFavorite(movie) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("favorites", "readwrite");
+    const store = tx.objectStore("favorites");
+    const req = store.put(movie);
+
+    req.onsuccess = () => {
+      resolve();
+    };
+    req.onerror = (e) => {
+      reject(e.target.error);
+    };
+  });
+}
+
+/**
+ * Pobranie pojedynczego filmu z "favorites" po imdbID.
+ * @param {string} imdbID
+ * @returns {Promise<Object|null>} Zwraca obiekt filmu lub null,
+ * jeśli takiego imdbID nie ma w bazie.
+ */
+export async function getFavoriteById(imdbID) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("favorites", "readonly");
+    const store = tx.objectStore("favorites");
+    const req = store.get(imdbID);
+
+    req.onsuccess = (e) => {
+      resolve(e.target.result); // jeśli nie ma, zwróci undefined (czyli null)
+    };
+    req.onerror = (e) => {
+      reject(e.target.error);
+    };
   });
 }

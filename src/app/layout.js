@@ -29,11 +29,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${roboto.variable}`}>
         <SWRegister />
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-          subsets={{ duration: 3000 }}
-        />
+        <Toaster position="top-center" duration={3000} />
         <EnablePushToast />
         <AppRouterCacheProvider>
           <ReactQueryProvider>

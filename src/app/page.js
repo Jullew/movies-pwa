@@ -10,8 +10,10 @@ import {
 } from "@mui/material";
 import { useMoviesQuery } from "@/hooks/useMoviesQuery";
 import MovieResults from "@/components/MovieResults";
+import useSyncFavorites from "@/hooks/useSyncFavorites";
 
 export default function HomePage() {
+  useSyncFavorites();
   const [query, setQuery] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
