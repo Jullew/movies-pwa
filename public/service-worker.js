@@ -16,6 +16,15 @@ precacheAndRoute(self.__WB_MANIFEST || []);
 registerRoute(({ url }) => url.pathname === "/", new NetworkFirst());
 registerRoute(({ url }) => url.pathname === "/favorites", new NetworkFirst());
 
+const CACHE_NAME = "movies-pwa-cache-v2"
+
+const PRECACHE = [
+  "/",
+  "/favorites",
+  "/manifest.json",
+  "/icons/f-192.png",
+]
+
 /* 
 self.addEventListener("install", (event) => {
   console.log("[SW] Install event");
