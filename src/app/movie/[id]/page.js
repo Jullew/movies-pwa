@@ -30,7 +30,7 @@ export default function MovieDetailsPage() {
     if (!sessionStorage.getItem("searchQuery")) {
       sessionStorage.removeItem("searchQuery");
     }
-    router.push("/");
+    router.back();
   };
 
   if (isLoading)
