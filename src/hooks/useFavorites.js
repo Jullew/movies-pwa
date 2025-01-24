@@ -34,9 +34,26 @@ export default function useFavorites() {
         );
         toast.error(`Usunięto z ulubionych: ${movie.Title}`);
       } else {
-        await addFavorite(movie);
-        setFavorites((prev) => [...prev, movie]);
-        toast.success(`Dodano do ulubionych: ${movie.Title}`);
+        let fullMovieData = movie;
+        const requiredFields = [
+          "imdbID",
+          "Title",
+          "Year",
+          "Poster",
+          "imdbRating",
+          "Genre",
+          "Runtime",
+          "Director",
+          "Plot",
+        ];
+        const hasAllFields = requiredFields.every((field) => field in movie);
+        if (!hasAllFields) {
+          fullMovieData = await fetchMovieById(movie.imdbID);
+        }
+
+        await addFavorite(fullMovieData);
+        setFavorites((prev) => [...prev, fullMovieData]);
+        toast.success(`Dodano do ulubionych: ${fullMovieData.Title}`);
       }
     } catch (err) {
       console.error("Błąd zapisu do IndexedDB:", err);

@@ -33,7 +33,7 @@ export async function addFavorite(movie) {
   return new Promise((resolve, reject) => {
     const tx = db.transaction("favorites", "readwrite");
     const store = tx.objectStore("favorites");
-    const req = store.put(movie); // Zmieniono z add na put
+    const req = store.put(movie);
 
     req.onsuccess = () => {
       resolve();
@@ -114,7 +114,7 @@ export async function getFavoriteById(imdbID) {
     const req = store.get(imdbID);
 
     req.onsuccess = (e) => {
-      resolve(e.target.result); // jeśli nie ma, zwróci undefined (czyli null)
+      resolve(e.target.result);
     };
     req.onerror = (e) => {
       reject(e.target.error);
