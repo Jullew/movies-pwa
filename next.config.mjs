@@ -7,7 +7,7 @@ const withPWA = nextPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
-  swSrc: "service-worker.js",
+  swSrc: "/public/service-worker.js",
 });
 
 export default withPWA(nextConfig);
