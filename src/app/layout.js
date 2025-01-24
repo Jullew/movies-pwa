@@ -9,6 +9,7 @@ import theme from "@/theme";
 import ReactQueryProvider from "./ReactQueryProvider";
 import ResponsiveAppBar from "@/components/AppBar";
 import { Toaster } from "react-hot-toast";
+import EnablePushToast from "@/components/EnablePushToast";
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
       <body className={`${roboto.variable}`}>
         <SWRegister />
         <Toaster position="top-center" reverseOrder={false} />
+        <EnablePushToast />
         <AppRouterCacheProvider>
           <ReactQueryProvider>
             <ThemeProvider theme={theme}>

@@ -1,3 +1,22 @@
+import { clientsClaim } from "workbox-core";
+import { setCacheNameDetails } from "workbox-core";
+import { precacheAndRoute } from "workbox-precaching";
+import { registerRoute } from "workbox-routing";
+import { NetworkFirst } from "workbox-strategies";
+
+clientsClaim();
+self.skipWaiting();
+
+setCacheNameDetails({
+  prefix: "movies-pwa-cache",
+});
+
+precacheAndRoute(self.__WB_MANIFEST || []);
+
+registerRoute(({ url }) => url.pathname === "/", new NetworkFirst());
+registerRoute(({ url }) => url.pathname === "/favorites", new NetworkFirst());
+
+/* 
 self.addEventListener("install", (event) => {
   console.log("[SW] Install event");
   event.waitUntil(
@@ -22,6 +41,8 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+*/
+// =================================================================
 
 self.addEventListener("push", (event) => {
   console.log("[SW] Push event");
