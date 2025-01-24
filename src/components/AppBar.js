@@ -14,7 +14,6 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Movie } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
 
 const menuItems = [
   { name: "Home", url: "/" },
@@ -22,7 +21,6 @@ const menuItems = [
 ];
 
 export default function ResponsiveAppBar() {
-  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   const handleOpenNavMenu = (event) => {
@@ -32,10 +30,6 @@ export default function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  const handleGoHome = () => {
-    router.push("/", )
-
-  }
   return (
     <AppBar position="static" sx={{ marginBottom: 5 }}>
       <Container maxWidth="xl">
