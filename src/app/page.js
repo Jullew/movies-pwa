@@ -13,8 +13,8 @@ import MovieResults from "@/components/MovieResults";
 import useSyncFavorites from "@/hooks/useSyncFavorites";
 
 export default function HomePage() {
-  useSyncFavorites();
   const [query, setQuery] = useState("");
+  useSyncFavorites();
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {

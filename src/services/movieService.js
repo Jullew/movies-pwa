@@ -15,7 +15,7 @@ export async function fetchMovies(query) {
     return res.data;
   } catch (error) {
     console.error("Błąd pobierania filmów:", error);
-    throw new Error("Nie udało się pobrać filmów. Spróbuj ponownie.", error);
+    throw new Error("Nie udało się pobrać filmów. Spróbuj ponownie.");
   }
 }
 

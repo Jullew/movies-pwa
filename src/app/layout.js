@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       <body className={`${roboto.variable}`}>
         <SWRegister />
         <Toaster position="top-center" duration={3000} />
-        <EnablePushToast />
+        {/* <EnablePushToast /> */}
         <AppRouterCacheProvider>
           <ReactQueryProvider>
             <ThemeProvider theme={theme}>
