@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { addFavorite, removeFavorite, getFavorites } from "@/utils/indexDB";
+import { fetchMovieById } from "@/services/movieService";
+import { syncFavorites } from "@/utils/syncFavorites";
 
 export default function useFavorites() {
   const [favorites, setFavorites] = useState([]);
@@ -34,25 +36,14 @@ export default function useFavorites() {
         );
         toast.error(`Usunięto z ulubionych: ${movie.Title}`);
       } else {
-        let fullMovieData = movie;
-        const requiredFields = [
-          "imdbID",
-          "Title",
-          "Year",
-          "Poster",
-          "imdbRating",
-          "Genre",
-          "Runtime",
-          "Director",
-          "Plot",
-        ];
-        const hasAllFields = requiredFields.every((field) => field in movie);
-        if (!hasAllFields) {
-          fullMovieData = await fetchMovieById(movie.imdbID);
+        const fullMovieData = await fetchMovieById(movie.imdbID);
+        if (!fullMovieData) {
+          throw new Error("Nie udało się pobrać pełnych danych filmu.");
         }
 
         await addFavorite(fullMovieData);
         setFavorites((prev) => [...prev, fullMovieData]);
+        syncFavorites();
         toast.success(`Dodano do ulubionych: ${fullMovieData.Title}`);
       }
     } catch (err) {
